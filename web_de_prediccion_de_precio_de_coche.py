@@ -5,6 +5,7 @@ import pandas as pd
 st.set_page_config(page_title="Precio de coche", layout="centered")
 
 st.title("🚗 Predicción del precio de un coche")
+st.header('amongus', divide='rainbow')
 
 # Cargar modelo y preprocesador
 model = joblib.load('best_model1.joblib')
