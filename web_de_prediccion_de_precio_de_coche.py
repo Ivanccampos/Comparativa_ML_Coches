@@ -1,11 +1,9 @@
-import streamlit as st
-
 import joblib
 import pandas as pd
 
 # Cargar preprocesador y modelo
-preprocessor = joblib.load("preprocessor2.joblib")
-model = joblib.load("best_model2.joblib")
+preprocessor = joblib.load("preprocessor1.joblib")
+model = joblib.load("best_model1.joblib")
 
 def pedir_datos():
     print("=== PREDICCIÓN DE PRECIO DE COCHE ===")
@@ -47,4 +45,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
