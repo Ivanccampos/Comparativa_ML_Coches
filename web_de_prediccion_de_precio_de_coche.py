@@ -17,7 +17,6 @@ st.title("💰 Predicción de Precio de Coche")
 # ------------------------------
 # Definir opciones conocidas
 # ------------------------------
-# Estas deben coincidir con las categorías vistas en entrenamiento
 model_options = ["A Class", "B Class", "C Class", "E Class", "S Class"]  # ejemplo
 transmission_options = ["Automatic", "Manual", "Semi-Auto"]
 fuel_options = ["Petrol", "Diesel", "Hybrid", "Electric"]
@@ -43,7 +42,7 @@ with st.form(key="car_form"):
 # Predicción
 # ------------------------------
 if submit_button:
-    # Crear DataFrame con los datos que el usuario introduce
+    # Crear DataFrame con los datos introducidos por el usuario
     datos_usuario = pd.DataFrame({
         "model": [model_car],
         "year": [year],
@@ -56,28 +55,28 @@ if submit_button:
     })
 
     try:
-        # Obtener columnas que el preprocesador espera
+        # Obtener las columnas que el preprocesador espera
         expected_cols = preprocessor.feature_names_in_
 
-        # Crear DataFrame con todas las columnas esperadas
+        # Crear DataFrame con todas las columnas esperadas y rellenar con 0 por defecto
         datos_completo = pd.DataFrame(0, index=[0], columns=expected_cols)
 
-        # Rellenar con los valores que tenemos del usuario
+        # Rellenar con los valores introducidos por el usuario donde corresponda
         for col in datos_usuario.columns:
             if col in datos_completo.columns:
                 datos_completo[col] = datos_usuario[col]
 
-        # Preprocesar
-        datos_procesados = preprocessor.transform(datos_completo)
+        # Spinner mientras se realiza la predicción
+        with st.spinner("Calculando el precio estimado..."):
+            datos_procesados = preprocessor.transform(datos_completo)
+            precio = model.predict(datos_procesados)[0]
 
-        # Predecir precio
-        precio = model.predict(datos_procesados)[0]
+        # Formatear precio a moneda europea
+        precio_formateado = f"{precio:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
         # Mostrar resultado
-        st.success(f"💰 Precio estimado del coche: {precio:,.0f} €")
+        st.success(f"💰 Precio estimado del coche: €{precio_formateado}")
 
     except Exception as e:
-        st.error(f"Error en la predicción: {e}")
+        st.error(f"Se produjo un error en la predicción: {e}")
         st.info("Asegúrate de usar solo opciones válidas de los desplegables.")
-
-
