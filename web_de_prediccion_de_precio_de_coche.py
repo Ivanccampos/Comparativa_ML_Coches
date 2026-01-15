@@ -17,9 +17,9 @@ st.title("💰 Predicción de Precio de Coche")
 # ------------------------------
 # Definir opciones conocidas
 # ------------------------------
-model_options = ["A Class", "B Class", "C Class", "E Class", "S Class"]  # ejemplo
-transmission_options = ["Automatic", "Manual", "Semi-Auto"]
-fuel_options = ["Petrol", "Diesel", "Hybrid", "Electric"]
+model_options = ["A Class", "C Class", "E Class", "GLC Class" ,"GLA Class", "B Class", "CL Class", "GLE Class"]
+transmission_options = ["Automatic", "Manual", "Semi-Auto", "Other"]
+fuel_options = ["Petrol", "Diesel", "Hybrid", "Oother"]
 
 # ------------------------------
 # Formulario de entrada
@@ -42,33 +42,25 @@ with st.form(key="car_form"):
 # Predicción
 # ------------------------------
 if submit_button:
-    # Crear DataFrame con los datos introducidos por el usuario
-    datos_usuario = pd.DataFrame({
-        "model": [model_car],
-        "year": [year],
-        "transmission": [transmission],
-        "mileage": [mileage],
-        "fuelType": [fuelType],
-        "tax": [tax],
-        "mpg": [mpg],
-        "engineSize": [engineSize]
-    })
-
     try:
-        # Obtener las columnas que el preprocesador espera
+        # Obtener las columnas exactas que el preprocesador espera
         expected_cols = preprocessor.feature_names_in_
 
-        # Crear DataFrame con todas las columnas esperadas y rellenar con 0 por defecto
-        datos_completo = pd.DataFrame(0, index=[0], columns=expected_cols)
-
-        # Rellenar con los valores introducidos por el usuario donde corresponda
-        for col in datos_usuario.columns:
-            if col in datos_completo.columns:
-                datos_completo[col] = datos_usuario[col]
+        # Crear DataFrame solo con esas columnas en el orden correcto
+        datos_usuario = pd.DataFrame({
+            "model": [model_car],
+            "year": [year],
+            "transmission": [transmission],
+            "mileage": [mileage],
+            "fuelType": [fuelType],
+            "tax": [tax],
+            "mpg": [mpg],
+            "engineSize": [engineSize]
+        })[expected_cols]  # <--- seleccionamos solo las columnas esperadas
 
         # Spinner mientras se realiza la predicción
         with st.spinner("Calculando el precio estimado..."):
-            datos_procesados = preprocessor.transform(datos_completo)
+            datos_procesados = preprocessor.transform(datos_usuario)
             precio = model.predict(datos_procesados)[0]
 
         # Formatear precio a moneda europea
