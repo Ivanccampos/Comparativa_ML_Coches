@@ -43,8 +43,8 @@ with st.form(key="car_form"):
 # Predicción
 # ------------------------------
 if submit_button:
-    # Crear DataFrame con EXACTAMENTE 8 columnas
-    datos = pd.DataFrame({
+    # Crear DataFrame con los datos que el usuario introduce
+    datos_usuario = pd.DataFrame({
         "model": [model_car],
         "year": [year],
         "transmission": [transmission],
@@ -56,8 +56,19 @@ if submit_button:
     })
 
     try:
+        # Obtener columnas que el preprocesador espera
+        expected_cols = preprocessor.feature_names_in_
+
+        # Crear DataFrame con todas las columnas esperadas
+        datos_completo = pd.DataFrame(0, index=[0], columns=expected_cols)
+
+        # Rellenar con los valores que tenemos del usuario
+        for col in datos_usuario.columns:
+            if col in datos_completo.columns:
+                datos_completo[col] = datos_usuario[col]
+
         # Preprocesar
-        datos_procesados = preprocessor.transform(datos)
+        datos_procesados = preprocessor.transform(datos_completo)
 
         # Predecir precio
         precio = model.predict(datos_procesados)[0]
@@ -65,7 +76,8 @@ if submit_button:
         # Mostrar resultado
         st.success(f"💰 Precio estimado del coche: {precio:,.0f} €")
 
-    except ValueError as e:
+    except Exception as e:
         st.error(f"Error en la predicción: {e}")
         st.info("Asegúrate de usar solo opciones válidas de los desplegables.")
+
 
