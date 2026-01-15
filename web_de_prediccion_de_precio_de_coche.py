@@ -3,10 +3,9 @@ import pandas as pd
 import streamlit as st
 
 # ------------------------------
-# Cargar preprocesador y modelo
+# Cargar modelo (pipeline completo)
 # ------------------------------
-preprocessor = joblib.load("preprocessor2.joblib")
-model = joblib.load("best_model2.joblib")
+model = joblib.load("best_model2.joblib")  # contiene preprocesador + Random Forest
 
 # ------------------------------
 # Configuración de la app
@@ -17,9 +16,9 @@ st.title("💰 Predicción de Precio de Coche")
 # ------------------------------
 # Definir opciones conocidas
 # ------------------------------
-model_options = ["A Class", "C Class", "E Class", "GLC Class" ,"GLA Class", "B Class", "CL Class", "GLE Class"]
-transmission_options = ["Automatic", "Manual", "Semi-Auto", "Other"]
-fuel_options = ["Petrol", "Diesel", "Hybrid", "Other"]
+model_options = ["A Class", "B Class", "C Class", "E Class", "S Class"]
+transmission_options = ["Automatic", "Manual", "Semi-Auto"]
+fuel_options = ["Petrol", "Diesel", "Hybrid", "Electric"]
 
 # ------------------------------
 # Formulario de entrada
@@ -43,10 +42,7 @@ with st.form(key="car_form"):
 # ------------------------------
 if submit_button:
     try:
-        # Obtener las columnas exactas que el preprocesador espera
-        expected_cols = preprocessor.feature_names_in_
-
-        # Crear DataFrame solo con esas columnas en el orden correcto
+        # Crear DataFrame con las entradas del usuario
         datos_usuario = pd.DataFrame({
             "model": [model_car],
             "year": [year],
@@ -56,12 +52,11 @@ if submit_button:
             "tax": [tax],
             "mpg": [mpg],
             "engineSize": [engineSize]
-        })[expected_cols]  # <--- seleccionamos solo las columnas esperadas
+        })
 
-        # Spinner mientras se realiza la predicción
+        # Spinner mientras se predice
         with st.spinner("Calculando el precio estimado..."):
-            datos_procesados = preprocessor.transform(datos_usuario)
-            precio = model.predict(datos_procesados)[0]
+            precio = model.predict(datos_usuario)[0]
 
         # Formatear precio a moneda europea
         precio_formateado = f"{precio:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
@@ -72,3 +67,4 @@ if submit_button:
     except Exception as e:
         st.error(f"Se produjo un error en la predicción: {e}")
         st.info("Asegúrate de usar solo opciones válidas de los desplegables.")
+
