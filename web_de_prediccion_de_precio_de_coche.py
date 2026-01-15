@@ -1,26 +1,50 @@
 import streamlit as st
 
-st.write("Hello, *World!* :sunglasses:")
-# Draw a title and some text to the app:
-'''
-# This is the document title
-
-This is some _markdown_.
-'''
-
+import joblib
 import pandas as pd
-df = pd.DataFrame({'col1': [1,2,3]})
-df  # 👈 Draw the dataframe
 
-x = 10
-'x', x  # 👈 Draw the string 'x' and then the value of x
+# Cargar preprocesador y modelo
+preprocessor = joblib.load("preprocessor1.joblib")
+model = joblib.load("best_model1.joblib")
 
-# Also works with most supported chart types
-import matplotlib.pyplot as plt
-import numpy as np
+def pedir_datos():
+    print("=== PREDICCIÓN DE PRECIO DE COCHE ===")
 
-arr = np.random.normal(1, 1, size=100)
-fig, ax = plt.subplots()
-ax.hist(arr, bins=20)
+    model_car = input("Modelo del coche (ej: A Class): ")
+    year = int(input("Año: "))
+    transmission = input("Transmisión (Automatic/Manual/Semi-Auto): ")
+    mileage = int(input("Kilometraje: "))
+    fuelType = input("Combustible (Petrol/Diesel/Hybrid/Electric): ")
+    tax = int(input("Impuesto (€): "))
+    mpg = float(input("Consumo MPG: "))
+    engineSize = float(input("Tamaño del motor (ej: 2.0): "))
 
-fig  # 👈 Draw a Matplotlib chart
+    # DataFrame con las columnas EXACTAS del entrenamiento
+    datos = pd.DataFrame([{
+        "model": model_car,
+        "year": year,
+        "transmission": transmission,
+        "mileage": mileage,
+        "fuelType": fuelType,
+        "tax": tax,
+        "mpg": mpg,
+        "engineSize": engineSize
+    }])
+
+    return datos
+
+def main():
+    datos = pedir_datos()
+
+    # Preprocesar
+    datos_procesados = preprocessor.transform(datos)
+
+    # Predecir precio
+    precio = model.predict(datos_procesados)[0]
+
+    print("\n💰 Precio estimado del coche:")
+    print(f"{precio:,.2f} €")
+
+if __name__ == "__main__":
+    main()
+
