@@ -48,12 +48,19 @@ with st.form("car_form"):
         step=0.1
     )
 
-    # --------------------------
-    # Opciones avanzadas
-    # --------------------------
-    with st.expander("Opciones avanzadas"):
-        tax = st.number_input("Impuesto anual (€)", min_value=0, value=150, step=10)
-        mpg = st.number_input("Consumo (mpg)", min_value=10.0, value=50.0, step=1.0)
+    tax = st.number_input(
+        "Impuesto anual (€)",
+        min_value=0,
+        value=150,
+        step=10
+    )
+
+    mpg = st.number_input(
+        "Consumo (mpg)",
+        min_value=10.0,
+        value=50.0,
+        step=1.0
+    )
 
     submit = st.form_submit_button("Predecir precio")
 
