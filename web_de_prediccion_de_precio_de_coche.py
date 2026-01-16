@@ -46,8 +46,10 @@ with st.form(key="car_form"):
 # ------------------------------
 if submit_button:
     try:
-        # Crear DataFrame con las entradas del usuario
-        datos_usuario = pd.DataFrame({
+        # 1. Definir los datos en el ORDEN EXACTO del dataset original
+        # El orden del CSV original es: model, year, price (se quita), transmission, mileage, fuelType, tax, mpg, engineSize
+        
+        datos_dict = {
             "model": [model_car],
             "year": [year],
             "transmission": [transmission],
@@ -56,10 +58,18 @@ if submit_button:
             "tax": [tax],
             "mpg": [mpg],
             "engineSize": [engineSize]
-        })
+        }
+        
+        # 2. Crear el DataFrame
+        datos_usuario = pd.DataFrame(datos_dict)
 
-        # Spinner mientras se predice
-        with st.spinner("Calculando el precio estimado..."):
+        # 3. Asegurar que las columnas están en el orden que espera el preprocesador
+        # Basado en tu archivo comparativas_modelos_ml.py
+        columnas_entrenamiento = ['model', 'year', 'transmission', 'mileage', 'fuelType', 'tax', 'mpg', 'engineSize']
+        datos_usuario = datos_usuario[columnas_entrenamiento]
+
+        # 4. Predicción
+        with st.spinner("Calculando..."):
             precio = model.predict(datos_usuario)[0]
 
         # Formatear precio a moneda europea
