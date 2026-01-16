@@ -38,7 +38,7 @@ def add_custom_style():
 
         /* Añadimos un margen superior al contenido para que no tape el coche */
         .main .block-container {
-            padding-top: 450px; /* Ajusta este valor según cuánto quieras bajar el formulario */
+            padding-bottom: 250px; /* Ajusta este valor según cuánto quieras bajar el formulario */
         }
 
         /* Estilo del Formulario para que destaque */
