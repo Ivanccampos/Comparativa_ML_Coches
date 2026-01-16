@@ -50,8 +50,11 @@ if submit:
             "transmission": [transmission],
             "mileage": [mileage],
             "fuelType": [fuelType],
+            "tax": [tax],
+            "mpg": [mpg],
             "engineSize": [engineSize]
         })
+
 
         # Limpieza defensiva (igual que en el EDA)
         input_data = input_data.applymap(
