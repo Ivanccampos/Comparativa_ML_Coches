@@ -18,45 +18,7 @@ st.set_page_config(
 import base64
 
 def add_local_bg(image_file):
-    with open(image_file, "rb") as f:
-        encoded_string = base64.b64encode(f.read()).decode()
-    
-    st.markdown(
-        f"""
-        <style>
-        .stApp {{
-            background-image: url("data:image/png;base64,{encoded_string}");
-            /* 'cover' asegura que la imagen cubra toda la pantalla */
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-attachment: fixed;
-        }}
-
-        /* Hacemos que el contenedor principal sea transparente para ver el fondo */
-        .main {{
-            background-color: rgba(0,0,0,0);
-        }}
-
-        /* Ajuste del padding para dispositivos móviles y escritorio */
-        .main .block-container {{
-            padding-top: 5rem;
-            max-width: 600px; /* Centra el formulario y lo hace legible */
-        }}
-
-        [data-testid="stForm"] {{
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            padding: 30px;
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
-# CAMBIA ESTO por el nombre de tu archivo de imagen
-add_local_bg("wp1828719-mercedes-benz-wallpapers.png")
-# Abrir y codificar la imagen local
+    # Abrir y codificar la imagen local
     with open(image_file, "rb") as f:
         encoded_string = base64.b64encode(f.read()).decode()
     
@@ -109,6 +71,9 @@ add_local_bg("wp1828719-mercedes-benz-wallpapers.png")
         """,
         unsafe_allow_html=True
     )
+
+add_local_bg("wp1828719-mercedes-benz-wallpapers.png")
+
 st.title("💰 Predicción de Precio de Coche")
 
 # ------------------------------
