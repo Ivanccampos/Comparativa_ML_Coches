@@ -53,6 +53,11 @@ if submit:
             "engineSize": [engineSize]
         })
 
+        # Limpieza defensiva (igual que en el EDA)
+        input_data = input_data.applymap(
+            lambda x: x.strip() if isinstance(x, str) else x
+        )
+
         with st.spinner("Calculando precio..."):
             precio = model.predict(input_data)[0]
 
@@ -61,7 +66,6 @@ if submit:
         st.success(f"💰 Precio estimado: €{precio_fmt}")
 
     except Exception as e:
-        st.error("Error en la predicción")
-        st.except
-
+        st.error("❌ Se produjo un error en la predicción")
+        st.exception(e)
 
