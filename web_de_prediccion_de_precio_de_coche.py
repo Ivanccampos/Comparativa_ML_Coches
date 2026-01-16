@@ -36,7 +36,8 @@ with st.form("car_form"):
     mileage = st.number_input("Kilometraje", min_value=0, value=10000, step=1000)
     fuelType = st.selectbox("Combustible", fuel_options)
     engineSize = st.number_input("Tamaño del motor (L)", min_value=0.5, value=2.0, step=0.1)
-
+    tax = st.number_input("Tamaño del motor (L)", min_value=0.5, value=2.0, step=0.1)
+    mpg = st.number_input("Tamaño del motor (L)", min_value=0.5, value=2.0, step=0.1)
     submit = st.form_submit_button("Predecir precio")
 
 # ------------------------------
