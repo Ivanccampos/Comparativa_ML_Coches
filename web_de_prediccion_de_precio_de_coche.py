@@ -18,48 +18,36 @@ st.set_page_config(
 import base64
 
 def add_local_bg(image_file):
-    # Abrir y codificar la imagen local
     with open(image_file, "rb") as f:
         encoded_string = base64.b64encode(f.read()).decode()
     
     st.markdown(
         f"""
         <style>
-        /* 1. Imagen de fondo local */
         .stApp {{
             background-image: url("data:image/png;base64,{encoded_string}");
-            background-size: contain;
+            /* 'cover' asegura que la imagen cubra toda la pantalla */
+            background-size: cover;
             background-repeat: no-repeat;
-            background-position: top center;
+            background-position: center;
             background-attachment: fixed;
-            background-color: #0E1117;
         }}
 
-        /* 2. Espaciado para que el formulario no tape la imagen */
+        /* Hacemos que el contenedor principal sea transparente para ver el fondo */
+        .main {{
+            background-color: rgba(0,0,0,0);
+        }}
+
+        /* Ajuste del padding para dispositivos móviles y escritorio */
         .main .block-container {{
-            padding-top: 22rem;
+            padding-top: 5rem;
+            max-width: 600px; /* Centra el formulario y lo hace legible */
         }}
 
-        /* 3. Estilo del Formulario (Legibilidad) */
         [data-testid="stForm"] {{
-            background-color: rgba(255, 255, 255, 0.95);
+            background-color: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
             padding: 30px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-        }}
-
-        /* 4. Resaltado del resultado (Éxito) */
-        .stAlert {{
-            background-color: #00c853 !important;
-            color: white !important;
-            box-shadow: 0 0 20px rgba(0, 200, 83, 0.6) !important;
-        }}
-
-        /* Titulo principal */
-        h1 {{
-            color: white !important;
-            text-shadow: 2px 2px 10px #000000;
-            text-align: center;
         }}
         </style>
         """,
