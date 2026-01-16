@@ -16,7 +16,7 @@ st.title("💰 Predicción de Precio de Coche")
 # ------------------------------
 # Definir opciones conocidas
 # ------------------------------
-model_options = ["A Class", "B Class", "C Class", "E Class", "CL Class", "GLC Class", "GLA Class", "GLE Class"]
+model_options = [" A Class", " B Class", " C Class", " E Class", " CL Class", " GLC Class", " GLA Class", " GLE Class"]
 transmission_options = ["Automatic", "Manual", "Semi-Auto", "Other"]
 fuel_options = ["Petrol", "Diesel", "Hybrid", "Other"]
 
