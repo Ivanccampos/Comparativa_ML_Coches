@@ -15,6 +15,22 @@ st.set_page_config(
     layout="centered"
 )
 
+def add_bg_from_url():
+    st.markdown(
+         f"""
+         <style>
+         .stApp {{
+             background-image: url("https://images.unsplash.com/photo-1492144534655-ae79c964c9d7");
+             background-attachment: fixed;
+             background-size: cover;
+         }}
+         </style>
+         """,
+         unsafe_allow_html=True
+     )
+
+add_bg_from_url()
+
 st.title("💰 Predicción de Precio de Coche")
 
 # ------------------------------
