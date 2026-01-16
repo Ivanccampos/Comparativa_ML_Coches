@@ -15,62 +15,59 @@ st.set_page_config(
     layout="centered"
 )
 
-def add_custom_style():
+import base64
+
+def add_local_bg(image_file):
+    # Abrir y codificar la imagen local
+    with open(image_file, "rb") as f:
+        encoded_string = base64.b64encode(f.read()).decode()
+    
     st.markdown(
-        """
+        f"""
         <style>
-        /* Fondo principal */
-        .stApp {
-            background-image: url("https://estaticos-cdn.prensaiberica.es/clip/ada6fbfb-ca1f-4641-ae31-a2488cc9208e_16-9-discover-aspect-ratio_default_0.webp");
-            background-size: contain; 
+        /* 1. Imagen de fondo local */
+        .stApp {{
+            background-image: url("data:image/png;base64,{encoded_string}");
+            background-size: contain;
             background-repeat: no-repeat;
             background-position: top center;
             background-attachment: fixed;
-            background-color: #0E1117; 
-        }
+            background-color: #0E1117;
+        }}
 
-        .main .block-container {
-            padding-top: 20rem;
-        }
+        /* 2. Espaciado para que el formulario no tape la imagen */
+        .main .block-container {{
+            padding-top: 22rem;
+        }}
 
-        /* Formulario */
-        [data-testid="stForm"] {
+        /* 3. Estilo del Formulario (Legibilidad) */
+        [data-testid="stForm"] {{
             background-color: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 30px;
-        }
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }}
 
-        /* --- AQUÍ EL TRUCO PARA EL RESULTADO --- */
-        
-        /* Estilo para el mensaje de éxito (Resultado) */
-        .stAlert {
-            background-color: #00c853 !important; /* Verde vibrante */
+        /* 4. Resaltado del resultado (Éxito) */
+        .stAlert {{
+            background-color: #00c853 !important;
             color: white !important;
-            font-size: 24px !important;
-            font-weight: bold !important;
-            border: 2px solid #ffffff !important;
             box-shadow: 0 0 20px rgba(0, 200, 83, 0.6) !important;
-            border-radius: 10px !important;
-        }
-        
-        /* Forzar que el texto dentro del alert sea blanco y grande */
-        .stAlert p {
-            color: white !important;
-            font-size: 1.5rem !important;
-            text-align: center;
-        }
+        }}
 
-        /* Título principal */
-        h1 {
+        /* Titulo principal */
+        h1 {{
             color: white !important;
             text-shadow: 2px 2px 10px #000000;
-        }
+            text-align: center;
+        }}
         </style>
         """,
         unsafe_allow_html=True
     )
 
-add_custom_style()
+# CAMBIA ESTO por el nombre de tu archivo de imagen
+add_local_bg("wp1828719-mercedes-benz-wallpapers.png")
 
 st.title("💰 Predicción de Precio de Coche")
 
