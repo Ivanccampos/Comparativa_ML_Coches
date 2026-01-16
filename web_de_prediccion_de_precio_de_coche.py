@@ -5,7 +5,7 @@ import streamlit as st
 # ------------------------------
 # Cargar modelo (pipeline completo)
 # ------------------------------
-model = joblib.load("best_model2.joblib")  # contiene preprocesador + Random Forest
+model = joblib.load("best_model5.joblib")  # contiene preprocesador + Random Forest
 
 # ------------------------------
 # Configuración de la app
@@ -55,8 +55,6 @@ if submit_button:
             "transmission": [transmission],
             "mileage": [mileage],
             "fuelType": [fuelType],
-            "tax": [tax],
-            "mpg": [mpg],
             "engineSize": [engineSize]
         }
         
