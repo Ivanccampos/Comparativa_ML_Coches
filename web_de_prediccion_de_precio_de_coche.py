@@ -43,7 +43,7 @@ def add_local_bg(image_file):
         /* 3. CUADRO DE INPUTS CON OPACIDAD AJUSTABLE */
         [data-testid="stForm"] {{
             /* Cambia el 0.8 para más o menos transparencia */
-            background-color: rgba(255, 255, 255, 0.8) !important;
+            background-color: rgba(255, 255, 255, 0.4) !important;
             
             /* Efecto de desenfoque opcional */
             backdrop-filter: blur(10px);
