@@ -19,38 +19,51 @@ def add_custom_style():
     st.markdown(
         """
         <style>
-        /* 1. Quitamos el espacio en blanco que Streamlit deja arriba del todo */
-        .stAppHeader {
-            background-color: rgba(0,0,0,0);
-        }
-        
-        /* 2. Configuramos el fondo para que ignore el scroll y se vea entero */
+        /* Fondo principal */
         .stApp {
             background-image: url("https://estaticos-cdn.prensaiberica.es/clip/ada6fbfb-ca1f-4641-ae31-a2488cc9208e_16-9-discover-aspect-ratio_default_0.webp");
             background-size: contain; 
             background-repeat: no-repeat;
             background-position: top center;
-            background-attachment: fixed; /* Mantiene la imagen fija arriba */
+            background-attachment: fixed;
             background-color: #0E1117; 
         }
 
-        /* 3. Ajustamos el contenedor principal para que empiece más abajo */
         .main .block-container {
-            padding-top: 18rem; /* Esto empuja el formulario hacia abajo para que no tape el coche */
+            padding-top: 20rem;
         }
 
-        /* 4. Estilo del Formulario para máxima legibilidad */
+        /* Formulario */
         [data-testid="stForm"] {
             background-color: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 30px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
 
-        /* 5. Aseguramos que el título se vea bien sobre la imagen */
+        /* --- AQUÍ EL TRUCO PARA EL RESULTADO --- */
+        
+        /* Estilo para el mensaje de éxito (Resultado) */
+        .stAlert {
+            background-color: #00c853 !important; /* Verde vibrante */
+            color: white !important;
+            font-size: 24px !important;
+            font-weight: bold !important;
+            border: 2px solid #ffffff !important;
+            box-shadow: 0 0 20px rgba(0, 200, 83, 0.6) !important;
+            border-radius: 10px !important;
+        }
+        
+        /* Forzar que el texto dentro del alert sea blanco y grande */
+        .stAlert p {
+            color: white !important;
+            font-size: 1.5rem !important;
+            text-align: center;
+        }
+
+        /* Título principal */
         h1 {
             color: white !important;
-            text-shadow: 2px 2px 8px #000000;
+            text-shadow: 2px 2px 10px #000000;
         }
         </style>
         """,
