@@ -35,8 +35,6 @@ with st.form(key="car_form"):
     transmission = st.selectbox("Transmisión", transmission_options)
     mileage = st.number_input("Kilometraje", min_value=0, value=10000, step=1000)
     fuelType = st.selectbox("Combustible", fuel_options)
-    tax = st.number_input("Impuesto (€)", min_value=0, value=200, step=10)
-    mpg = st.number_input("Consumo MPG", min_value=0.0, value=30.0, step=0.1)
     engineSize = st.number_input("Tamaño del motor (ej: 2.0)", min_value=0.0, value=2.0, step=0.1)
 
     submit_button = st.form_submit_button(label="Predecir Precio")
