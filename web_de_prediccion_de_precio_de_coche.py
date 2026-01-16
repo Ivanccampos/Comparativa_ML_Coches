@@ -15,26 +15,60 @@ st.set_page_config(
     layout="centered"
 )
 
-def add_bg_from_url():
+def add_custom_style():
     st.markdown(
-         f"""
-         <style>
-         .stApp {{
-             background-image: url("https://estaticos-cdn.prensaiberica.es/clip/ada6fbfb-ca1f-4641-ae31-a2488cc9208e_16-9-discover-aspect-ratio_default_0.webp");
-             background-attachment: fixed;
-             background-size: cover;
-         }}
-         </style>
-         """,
-         unsafe_allow_html=True
-        [data-testid="stForm"] {
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 10px;
-            padding: 20px;
+        """
+        <style>
+        /* Imagen de fondo personalizada */
+        .stApp {
+            background-image: url("https://estaticos-cdn.prensaiberica.es/clip/ada6fbfb-ca1f-4641-ae31-a2488cc9208e_16-9-discover-aspect-ratio_default_0.webp");
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
         }
-     )
 
-add_bg_from_url()
+        /* Capa de desenfoque y oscurecimiento para mejorar contraste */
+        .main {
+            background-color: rgba(0, 0, 0, 0.3); /* Capa oscura muy sutil */
+        }
+
+        /* Estilo del Formulario (Tarjeta Blanca Semi-transparente) */
+        [data-testid="stForm"] {
+            background-color: rgba(255, 255, 255, 0.85); 
+            border-radius: 20px;
+            padding: 40px;
+            border: none;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        /* Ajuste de títulos para que resalten sobre el fondo oscuro */
+        h1 {
+            color: white !important;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            padding-bottom: 20px;
+        }
+
+        /* Ajuste de etiquetas dentro del formulario */
+        label {
+            color: #1E1E1E !important;
+            font-weight: 600 !important;
+        }
+        
+        /* Estilo del botón de predicción */
+        .stButton>button {
+            width: 100%;
+            border-radius: 10px;
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+add_custom_style()
 
 st.title("💰 Predicción de Precio de Coche")
 
