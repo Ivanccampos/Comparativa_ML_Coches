@@ -10,11 +10,15 @@ model = joblib.load("best_model.joblib")
 # ------------------------------
 # Configuración de la app
 # ------------------------------
-st.set_page_config(page_title="Predicción Precio de Coche", layout="centered")
+st.set_page_config(
+    page_title="Predicción Precio de Coche",
+    layout="centered"
+)
+
 st.title("💰 Predicción de Precio de Coche")
 
 # ------------------------------
-# Opciones válidas (SIN ESPACIOS)
+# Opciones válidas (coherentes con el dataset)
 # ------------------------------
 model_options = [
     "A Class", "B Class", "C Class", "E Class",
@@ -25,19 +29,32 @@ transmission_options = ["Automatic", "Manual", "Semi-Auto"]
 fuel_options = ["Petrol", "Diesel", "Hybrid"]
 
 # ------------------------------
-# Formulario
+# Formulario de entrada
 # ------------------------------
 with st.form("car_form"):
     st.header("Introduce los datos del coche")
 
     model_car = st.selectbox("Modelo", model_options)
     year = st.number_input("Año", min_value=1990, max_value=2025, value=2020)
+
     transmission = st.selectbox("Transmisión", transmission_options)
-    mileage = st.number_input("Kilometraje", min_value=0, value=10000, step=1000)
+    mileage = st.number_input("Kilometraje (km)", min_value=0, value=10000, step=1000)
     fuelType = st.selectbox("Combustible", fuel_options)
-    engineSize = st.number_input("Tamaño del motor (L)", min_value=0.5, value=2.0, step=0.1)
-    tax = st.number_input("Tamaño del motor (L)", min_value=0.5, value=2.0, step=0.1)
-    mpg = st.number_input("Tamaño del motor (L)", min_value=0.5, value=2.0, step=0.1)
+
+    engineSize = st.number_input(
+        "Tamaño del motor (L)",
+        min_value=0.5,
+        value=2.0,
+        step=0.1
+    )
+
+    # --------------------------
+    # Opciones avanzadas
+    # --------------------------
+    with st.expander("Opciones avanzadas"):
+        tax = st.number_input("Impuesto anual (€)", min_value=0, value=150, step=10)
+        mpg = st.number_input("Consumo (mpg)", min_value=10.0, value=50.0, step=1.0)
+
     submit = st.form_submit_button("Predecir precio")
 
 # ------------------------------
@@ -56,7 +73,6 @@ if submit:
             "engineSize": [engineSize]
         })
 
-
         # Limpieza defensiva (igual que en el EDA)
         input_data = input_data.applymap(
             lambda x: x.strip() if isinstance(x, str) else x
@@ -72,4 +88,3 @@ if submit:
     except Exception as e:
         st.error("❌ Se produjo un error en la predicción")
         st.exception(e)
-
