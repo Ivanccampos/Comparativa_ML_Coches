@@ -27,6 +27,11 @@ def add_bg_from_url():
          </style>
          """,
          unsafe_allow_html=True
+        [data-testid="stForm"] {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+        }
      )
 
 add_bg_from_url()
