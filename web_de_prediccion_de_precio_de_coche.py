@@ -19,29 +19,27 @@ def add_custom_style():
     st.markdown(
         """
         <style>
-        /* Fondo de la aplicación */
+        /* 1. Quitamos el espacio en blanco que Streamlit deja arriba del todo */
+        .stAppHeader {
+            background-color: rgba(0,0,0,0);
+        }
+        
+        /* 2. Configuramos el fondo para que ignore el scroll y se vea entero */
         .stApp {
             background-image: url("https://estaticos-cdn.prensaiberica.es/clip/ada6fbfb-ca1f-4641-ae31-a2488cc9208e_16-9-discover-aspect-ratio_default_0.webp");
-            
-            /* 'contain' hace que la imagen se vea completa sin recortarse */
             background-size: contain; 
-            
-            /* Evita que la imagen se repita como un mosaico */
             background-repeat: no-repeat;
-            
-            /* Centra la imagen en la parte superior */
             background-position: top center;
-            
-            /* Color de fondo para las zonas donde no llega la imagen */
+            background-attachment: fixed; /* Mantiene la imagen fija arriba */
             background-color: #0E1117; 
         }
 
-        /* Añadimos un margen superior al contenido para que no tape el coche */
+        /* 3. Ajustamos el contenedor principal para que empiece más abajo */
         .main .block-container {
-            padding-bottom: 250px; /* Ajusta este valor según cuánto quieras bajar el formulario */
+            padding-top: 18rem; /* Esto empuja el formulario hacia abajo para que no tape el coche */
         }
 
-        /* Estilo del Formulario para que destaque */
+        /* 4. Estilo del Formulario para máxima legibilidad */
         [data-testid="stForm"] {
             background-color: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
@@ -49,9 +47,10 @@ def add_custom_style():
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
 
-        /* Texto de etiquetas en negro para lectura clara */
-        label {
-            color: #1E1E1E !important;
+        /* 5. Aseguramos que el título se vea bien sobre la imagen */
+        h1 {
+            color: white !important;
+            text-shadow: 2px 2px 8px #000000;
         }
         </style>
         """,
