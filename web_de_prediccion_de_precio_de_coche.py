@@ -18,7 +18,7 @@ st.title("💰 Predicción de Precio de Coche")
 # ------------------------------
 # Añade el espacio inicial a cada nombre de modelo
 model_options = [
-    " A Class", " B Class", " C Class", " E Class", 
+    " A Class", "B Class", "C Class", " E Class", 
     " CL Class", " GLC Class", " GLA Class", " GLE Class"
 ]
 transmission_options = ["Automatic", "Manual", "Semi-Auto", "Other"]
