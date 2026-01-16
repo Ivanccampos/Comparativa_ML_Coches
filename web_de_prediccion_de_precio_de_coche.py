@@ -56,7 +56,59 @@ def add_local_bg(image_file):
 
 # CAMBIA ESTO por el nombre de tu archivo de imagen
 add_local_bg("wp1828719-mercedes-benz-wallpapers.png")
+# Abrir y codificar la imagen local
+    with open(image_file, "rb") as f:
+        encoded_string = base64.b64encode(f.read()).decode()
+    
+    st.markdown(
+        f"""
+        <style>
+        /* 1. Imagen de fondo total */
+        .stApp {{
+            background-image: url("data:image/png;base64,{encoded_string}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+        }}
 
+        /* 2. Ajuste del contenedor principal */
+        .main .block-container {{
+            padding-top: 5rem;
+            max-width: 600px;
+        }}
+
+        /* 3. CUADRO DE INPUTS CON OPACIDAD AJUSTABLE */
+        [data-testid="stForm"] {{
+            /* Cambia el 0.8 para más o menos transparencia */
+            background-color: rgba(255, 255, 255, 0.8) !important;
+            
+            /* Efecto de desenfoque opcional */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }}
+
+        /* 4. Estilo del resultado */
+        .stAlert {{
+            background-color: #00c853 !important;
+            color: white !important;
+        }}
+
+        /* Título */
+        h1 {{
+            color: white !important;
+            text-shadow: 2px 2px 10px #000000;
+            text-align: center;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
 st.title("💰 Predicción de Precio de Coche")
 
 # ------------------------------
