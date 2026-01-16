@@ -92,8 +92,12 @@ with st.form("car_form"):
     st.header("Introduce los datos del coche")
 
     model_car = st.selectbox("Modelo", model_options)
-    year = st.slider("Año del coche", min_value=2001, max_value=2020, value=2015  # Valor por defecto donde aparecerá el selector al carga)
-
+    year = st.slider(
+        "Año del coche", 
+        min_value=2001, 
+        max_value=2020, 
+        value=2015  # Valor por defecto donde aparecerá el selector al cargar
+    )
     transmission = st.selectbox("Transmisión", transmission_options)
     mileage = st.number_input("Kilometraje (km)", min_value=0, value=10000, step=1000)
     fuelType = st.selectbox("Combustible", fuel_options)
