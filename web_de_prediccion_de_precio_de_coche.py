@@ -19,49 +19,39 @@ def add_custom_style():
     st.markdown(
         """
         <style>
-        /* Imagen de fondo personalizada */
+        /* Fondo de la aplicación */
         .stApp {
             background-image: url("https://estaticos-cdn.prensaiberica.es/clip/ada6fbfb-ca1f-4641-ae31-a2488cc9208e_16-9-discover-aspect-ratio_default_0.webp");
-            background-attachment: fixed;
-            background-size: cover;
-            background-position: center;
+            
+            /* 'contain' hace que la imagen se vea completa sin recortarse */
+            background-size: contain; 
+            
+            /* Evita que la imagen se repita como un mosaico */
+            background-repeat: no-repeat;
+            
+            /* Centra la imagen en la parte superior */
+            background-position: top center;
+            
+            /* Color de fondo para las zonas donde no llega la imagen */
+            background-color: #0E1117; 
         }
 
-        /* Capa de desenfoque y oscurecimiento para mejorar contraste */
-        .main {
-            background-color: rgba(0, 0, 0, 0.3); /* Capa oscura muy sutil */
+        /* Añadimos un margen superior al contenido para que no tape el coche */
+        .main .block-container {
+            padding-top: 250px; /* Ajusta este valor según cuánto quieras bajar el formulario */
         }
 
-        /* Estilo del Formulario (Tarjeta Blanca Semi-transparente) */
+        /* Estilo del Formulario para que destaque */
         [data-testid="stForm"] {
-            background-color: rgba(255, 255, 255, 0.85); 
-            border-radius: 20px;
-            padding: 40px;
-            border: none;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
 
-        /* Ajuste de títulos para que resalten sobre el fondo oscuro */
-        h1 {
-            color: white !important;
-            text-align: center;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            padding-bottom: 20px;
-        }
-
-        /* Ajuste de etiquetas dentro del formulario */
+        /* Texto de etiquetas en negro para lectura clara */
         label {
             color: #1E1E1E !important;
-            font-weight: 600 !important;
-        }
-        
-        /* Estilo del botón de predicción */
-        .stButton>button {
-            width: 100%;
-            border-radius: 10px;
-            background-color: #007bff;
-            color: white;
-            font-weight: bold;
         }
         </style>
         """,
