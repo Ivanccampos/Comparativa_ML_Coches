@@ -42,7 +42,6 @@ def add_local_bg(image_file):
 
         /* 3. CUADRO DE INPUTS CON OPACIDAD AJUSTABLE */
         [data-testid="stForm"] {{
-            /* Cambia el 0.8 para más o menos transparencia */
             background-color: rgba(255, 255, 255, 0.4) !important;
             
             /* Efecto de desenfoque opcional */
@@ -74,7 +73,7 @@ def add_local_bg(image_file):
 
 add_local_bg("wp1828719-mercedes-benz-wallpapers.png")
 
-st.title("💰 Predicción de Precio de Coche")
+st.title("Predicción de Precio de Coche")
 
 # ------------------------------
 # Opciones válidas (coherentes con el dataset)
@@ -104,25 +103,25 @@ with st.form("car_form"):
     mileage = st.number_input("Kilometraje (km)", min_value=0, value=10000, step=1000)
     fuelType = st.selectbox("Combustible", fuel_options)
 
-    engineSize = st.number_input(
+    engineSize = st.slider(
         "Tamaño del motor (L)",
-        min_value=0.5,
-        value=2.0,
-        step=0.1
+        min_value=0,
+        max_value=6.2,
+        value=2
     )
 
-    tax = st.number_input(
+    tax = st.slider(
         "Impuesto anual (€)",
         min_value=0,
-        value=150,
-        step=10
+        max_value=580,
+        value=150
     )
 
-    mpg = st.number_input(
+    mpg = st.slider(
         "Consumo (mpg)",
-        min_value=10.0,
-        value=50.0,
-        step=1.0
+        min_value=1.1,
+        max_value=80.7,
+        value=20
     )
 
     submit = st.form_submit_button("Predecir precio")
