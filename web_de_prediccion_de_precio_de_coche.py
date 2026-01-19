@@ -95,11 +95,12 @@ with st.form("car_form"):
 
     transmission = st.selectbox("Transmisión", transmission_options)
 
-    mileage = st.number_input(
+    mileage = st.slider(
         "Kilometraje (km)",
-        min_value=0,
-        value=10000,
-        step=1000
+        min_value=1,
+        max_value=9999,
+        value=10000 // 2,  # valor inicial ~5000
+        step=100
     )
 
     fuelType = st.selectbox("Combustible", fuel_options)
@@ -133,14 +134,6 @@ with st.form("car_form"):
 # ------------------------------
 if submit:
     try:
-        # Validaciones básicas
-        if mileage <= 0:
-            st.error("❌ El kilometraje debe ser mayor que 0")
-            st.stop()
-
-        if mileage > 500_000:
-            st.warning("⚠️ Kilometraje muy alto, el precio puede no ser fiable")
-
         input_data = pd.DataFrame({
             "model": [model_car],
             "year": [year],
@@ -161,7 +154,6 @@ if submit:
 
         precio_fmt = f"{precio:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
-        # Resultado estilizado
         st.markdown(
             f"""
             <div style="
@@ -183,4 +175,3 @@ if submit:
     except Exception as e:
         st.error("❌ Se produjo un error en la predicción")
         st.exception(e)
-
