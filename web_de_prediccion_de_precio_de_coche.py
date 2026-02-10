@@ -1,4 +1,4 @@
-import joblib
+import pickle
 import pandas as pd
 import streamlit as st
 import base64
@@ -7,18 +7,28 @@ import base64
 # Configuración de la app
 # ------------------------------
 st.set_page_config(
-    page_title="Predicción Precio de Coche",
+    page_title="Recomendador de Películas",
     layout="centered"
 )
 
 # ------------------------------
-# Cargar modelo (CACHEADO)
+# Cargar modelos (CACHEADO)
 # ------------------------------
 @st.cache_resource
-def load_model():
-    return joblib.load("best_model.joblib")
+def load_assets():
+    with open("kmeans_model.pkl", "rb") as f:
+        kmeans = pickle.load(f)
 
-model = load_model()
+    with open("scaler.pkl", "rb") as f:
+        scaler = pickle.load(f)
+
+    with open("all_genre_cols.pkl", "rb") as f:
+        genre_cols = pickle.load(f)
+
+    return kmeans, scaler, genre_cols
+
+
+kmeans, scaler, genre_cols = load_assets()
 
 # ------------------------------
 # Fondo con imagen local
@@ -46,11 +56,9 @@ def add_local_bg(image_file):
         [data-testid="stForm"] {{
             background-color: rgba(255, 255, 255, 0.4) !important;
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             border-radius: 15px;
             padding: 30px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255, 255, 255, 0.3);
         }}
 
         h1 {{
@@ -63,101 +71,57 @@ def add_local_bg(image_file):
         unsafe_allow_html=True
     )
 
-add_local_bg("wp1828719-mercedes-benz-wallpapers.png")
 
-st.title("Predicción de Precio de Coche")
+add_local_bg("movies_bg.png")
 
-# ------------------------------
-# Opciones válidas
-# ------------------------------
-model_options = [
-    "A Class", "B Class", "C Class", "E Class",
-    "CL Class", "GLC Class", "GLA Class", "GLE Class"
-]
-
-transmission_options = ["Automatic", "Manual", "Semi-Auto"]
-fuel_options = ["Petrol", "Diesel", "Hybrid"]
+st.title("🎬 Recomendador de Películas")
 
 # ------------------------------
 # Formulario
 # ------------------------------
-with st.form("car_form"):
-    st.header("Introduce los datos del coche")
+with st.form("movie_form"):
+    st.header("Perfil del usuario")
 
-    model_car = st.selectbox("Modelo", model_options)
-
-    year = st.slider(
-        "Año del coche",
-        min_value=2001,
-        max_value=2020,
-        value=2015
+    avg_rating = st.slider(
+        "Rating promedio del usuario",
+        min_value=0.5,
+        max_value=5.0,
+        value=3.5,
+        step=0.5
     )
 
-    transmission = st.selectbox("Transmisión", transmission_options)
-
-    mileage = st.slider(
-        "Kilometraje (km)",
-        min_value=1,
-        max_value=9999,
-        value=10000 // 2,  # valor inicial ~5000
-        step=100
+    selected_genres = st.multiselect(
+        "Géneros que le gustan",
+        options=genre_cols
     )
 
-    fuelType = st.selectbox("Combustible", fuel_options)
-
-    engineSize = st.slider(
-        "Tamaño del motor (L)",
-        min_value=0.8,
-        max_value=6.2,
-        value=2.0,
-        step=0.1
-    )
-
-    tax = st.slider(
-        "Impuesto anual (€)",
-        min_value=0,
-        max_value=580,
-        value=150
-    )
-
-    mpg = st.slider(
-        "Consumo (mpg)",
-        min_value=1.1,
-        max_value=80.7,
-        value=20.0
-    )
-
-    submit = st.form_submit_button("Predecir precio")
+    submit = st.form_submit_button("Analizar perfil")
 
 # ------------------------------
 # Predicción
 # ------------------------------
 if submit:
     try:
-        input_data = pd.DataFrame({
-            "model": [model_car],
-            "year": [year],
-            "transmission": [transmission],
-            "mileage": [mileage],
-            "fuelType": [fuelType],
-            "tax": [tax],
-            "mpg": [mpg],
-            "engineSize": [engineSize]
-        })
+        # Vector de géneros
+        genre_df = pd.DataFrame(0, index=[0], columns=genre_cols)
+        for g in selected_genres:
+            genre_df[g] = 1
 
-        # Limpieza future-proof
-        for col in input_data.select_dtypes(include="object"):
-            input_data[col] = input_data[col].str.strip()
+        user_df = pd.concat(
+            [pd.DataFrame({"rating": [avg_rating]}), genre_df],
+            axis=1
+        )
 
-        with st.spinner("Calculando precio..."):
-            precio = model.predict(input_data)[0]
+        # Escalar
+        user_scaled = scaler.transform(user_df)
 
-        precio_fmt = f"{precio:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+        with st.spinner("Analizando preferencias..."):
+            cluster = kmeans.predict(user_scaled)[0]
 
         st.markdown(
             f"""
             <div style="
-                background-color:#00c853;
+                background-color:#6200ea;
                 padding:20px;
                 border-radius:15px;
                 text-align:center;
@@ -166,12 +130,12 @@ if submit:
                 font-weight:bold;
                 box-shadow: 0 10px 25px rgba(0,0,0,0.5);
             ">
-                💰 Precio estimado: €{precio_fmt}
+                🎯 Usuario asignado al clúster {cluster}
             </div>
             """,
             unsafe_allow_html=True
         )
 
     except Exception as e:
-        st.error("❌ Se produjo un error en la predicción")
+        st.error("❌ Error al analizar el perfil")
         st.exception(e)
